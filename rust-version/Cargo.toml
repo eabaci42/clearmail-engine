@@ -1,0 +1,68 @@
+[package]
+name = "clearmail-rule-engine"
+version = "0.1.0"
+edition = "2021"
+authors = ["Entegrex Software"]
+description = "Yüksek performanslı e-posta kural motoru"
+repository = "https://github.com/eabaci42/clearmail-engine"
+readme = "README.md"
+license = "Proprietary"
+
+[lib]
+name = "clearmail_rule_engine"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# Utility
+regex = "1.7.1"
+lazy_static = "1.4.0"
+serde = { version = "1.0.152", features = ["derive"] }
+serde_json = "1.0.93"
+chrono = { version = "0.4.23", features = ["serde"] }
+uuid = { version = "1.3.0", features = ["v4", "serde"] }
+
+# Error handling
+thiserror = "1.0.38"
+anyhow = "1.0.69"
+
+# Logging
+log = "0.4.17"
+env_logger = "0.10.0"
+
+# Parallelism
+rayon = "1.7.0"
+crossbeam = "0.8.2"
+parking_lot = "0.12.1"
+
+# FFI
+libc = "0.2.139"
+cbindgen = "0.24.3"
+
+[dev-dependencies]
+criterion = "0.4.0"
+proptest = "1.1.0"
+mockall = "0.11.3"
+tempfile = "3.3.0"
+
+[build-dependencies]
+cbindgen = "0.24.3"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true
+debug = false
+
+[profile.dev]
+opt-level = 0
+debug = true
+
+[[bench]]
+name = "rule_matching"
+harness = false
+
+[[bench]]
+name = "email_processing"
+harness = false
